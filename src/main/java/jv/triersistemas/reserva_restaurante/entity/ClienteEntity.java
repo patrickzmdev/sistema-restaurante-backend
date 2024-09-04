@@ -2,6 +2,7 @@ package jv.triersistemas.reserva_restaurante.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -15,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jv.triersistemas.reserva_restaurante.dto.ClienteDto;
+import jv.triersistemas.reserva_restaurante.dto.RestauranteDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +38,7 @@ public class ClienteEntity extends PessoaBase {
 	private BigDecimal quantidadeValorGasto;
 
 	private boolean bloqueado;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	@JoinColumn(name = "restaurante_id", nullable = false)
 	@JsonIgnore
@@ -46,12 +48,24 @@ public class ClienteEntity extends PessoaBase {
 		this.id = dto.getId();
 		this.nome = dto.getNome();
 		this.sobrenome = dto.getSobrenome();
+		this.cpf = dto.getCpf();
 		this.dataNascimento = dto.getDataNascimento();
 		this.sexo = dto.getSexo();
 		this.telefone = dto.getTelefone();
-		this.dataCadastro = dto.getDataCadastro();
-		this.quantidadeReservas = dto.getQuantidadeReservas();
-		this.quantidadeValorGasto = dto.getQuantidadeValorGasto();
+		this.dataCadastro = Objects.requireNonNullElse(dto.getDataCadastro(), LocalDate.now());
+		this.quantidadeReservas = Objects.requireNonNullElse(dto.getQuantidadeReservas(), 0);
+		this.quantidadeValorGasto = Objects.requireNonNullElse(dto.getQuantidadeValorGasto(), BigDecimal.ZERO);
+		this.bloqueado = Objects.requireNonNullElse(dto.isBloqueado(), true);
+	}
+
+	public ClienteEntity atualizaCliente(ClienteDto dto) {
+		this.nome = dto.getNome();
+		this.sobrenome = dto.getSobrenome();
+		this.cpf = dto.getCpf();
+		this.dataCadastro = dto.getDataNascimento();
+		this.sexo = dto.getSexo();
+		this.telefone = dto.getTelefone();
 		this.bloqueado = dto.isBloqueado();
+		return this;
 	}
 }

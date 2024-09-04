@@ -7,7 +7,6 @@ import jv.triersistemas.reserva_restaurante.entity.ClienteEntity;
 import jv.triersistemas.reserva_restaurante.entity.PessoaBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
@@ -31,6 +30,7 @@ public class ClienteDto extends PessoaBase {
 		this.id = clienteEntity.getId();
 		this.nome = clienteEntity.getNome();
 		this.sobrenome = clienteEntity.getSobrenome();
+		this.cpf = clienteEntity.getCpf();
 		this.dataNascimento = clienteEntity.getDataNascimento();
 		this.sexo = clienteEntity.getSexo();
 		this.telefone = clienteEntity.getTelefone();

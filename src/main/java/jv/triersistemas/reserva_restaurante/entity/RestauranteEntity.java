@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jv.triersistemas.reserva_restaurante.dto.RestauranteDto;
 import jv.triersistemas.reserva_restaurante.enums.TipoComidaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,4 +33,20 @@ public class RestauranteEntity {
 
 	@Enumerated(EnumType.ORDINAL)
 	private TipoComidaEnum tipoComida;
+	
+	public RestauranteEntity(RestauranteDto dto) {
+		this.id = dto.getId();
+		this.nome = dto.getNome();
+		this.cnpj = dto.getCnpj();
+		this.estrelas = dto.getEstrelas();
+		this.tipoComida = dto.getTipoComida();
+	}
+	
+    public RestauranteEntity atualizaRestaurante(RestauranteDto dto) {
+    	this.nome = dto.getNome();
+    	this.cnpj = dto.getCnpj();
+    	this.estrelas = dto.getEstrelas();
+    	this.tipoComida = dto.getTipoComida();
+    	return this;
+    }
 }
