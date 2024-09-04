@@ -27,6 +27,7 @@ public class FuncionarioDto extends PessoaBase{
 		this.id = funcionarioEntity.getId();
 		this.nome = funcionarioEntity.getNome();
 		this.sobrenome = funcionarioEntity.getSobrenome();
+		this.cpf = funcionarioEntity.getCpf();
 		this.dataNascimento = funcionarioEntity.getDataNascimento();
 		this.sexo = funcionarioEntity.getSexo();
 		this.telefone = funcionarioEntity.getTelefone();

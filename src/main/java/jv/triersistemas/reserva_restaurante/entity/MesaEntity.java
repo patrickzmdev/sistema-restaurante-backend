@@ -27,7 +27,7 @@ public class MesaEntity {
 	@Column(nullable = false)
 	private int numero;
 	@Column(nullable = false)
-	private int capacidadePessoas;
+	private int qntdPessoas;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	@JoinColumn(name = "restaurante_id", nullable = false)
@@ -37,6 +37,12 @@ public class MesaEntity {
 	public MesaEntity(MesaDto dto) {
 		this.id = dto.getId();
 		this.numero = dto.getNumero();
-		this.capacidadePessoas = dto.getCapacidadePessoas();
+		this.qntdPessoas = dto.getQntdPessoas();
+	}
+	
+	public MesaEntity atualizaMesa(MesaDto dto) {
+		this.qntdPessoas = dto.getQntdPessoas();
+		this.numero = dto.getNumero();
+		return this;
 	}
 }

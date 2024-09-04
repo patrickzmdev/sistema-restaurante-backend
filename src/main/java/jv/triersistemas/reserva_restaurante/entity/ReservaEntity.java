@@ -1,20 +1,23 @@
 package jv.triersistemas.reserva_restaurante.entity;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jv.triersistemas.reserva_restaurante.dto.ClienteDto;
 import jv.triersistemas.reserva_restaurante.dto.ReservaDto;
+import jv.triersistemas.reserva_restaurante.enums.StatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +34,9 @@ public class ReservaEntity {
 	private LocalDate dataReserva;
 	@Column(nullable = false)
 	private int quantidadePessoas;
+	@Enumerated(EnumType.ORDINAL)
+	private StatusEnum status;
+	private String observacao;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	@JoinColumn(name = "cliente_id", nullable = false)
@@ -46,5 +52,19 @@ public class ReservaEntity {
 		this.id = dto.getId();
 		this.dataReserva = dto.getDataReserva();
 		this.quantidadePessoas = dto.getQuantidadePessoas();
+		this.status = Objects.requireNonNullElse(dto.getStatus(), StatusEnum.AGENDADA);
+		this.observacao = dto.getObservacao();
+	}
+	
+	public ReservaEntity atualizaMesa(ReservaDto dto) {
+		this.dataReserva = dto.getDataReserva();
+		this.quantidadePessoas = dto.getQuantidadePessoas();
+		this.observacao = dto.getObservacao();
+		return this;
+	}
+	
+	public ReservaEntity atualizarStatus(StatusEnum status) {
+		this.status = status;
+		return this;
 	}
 }

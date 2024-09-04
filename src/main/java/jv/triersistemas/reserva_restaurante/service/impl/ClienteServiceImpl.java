@@ -2,6 +2,7 @@ package jv.triersistemas.reserva_restaurante.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,10 @@ public class ClienteServiceImpl implements ClienteService{
 	public ClienteDto adicionarCliente(ClienteDto novoCliente) {
 		RestauranteEntity restaurante = restauranteRepository.findById(novoCliente.getIdRestaurante())
 				.orElseThrow(() -> new IllegalArgumentException("Restaurante não encontrado"));
+		String cpfSemCaracteres = limparCpf(novoCliente.getCpf());
 		validarIdade(novoCliente);
 		ClienteEntity clienteEntity = new ClienteEntity(novoCliente);
+		clienteEntity.setCpf(cpfSemCaracteres);
 		clienteEntity.setRestaurante(restaurante);
 		return new ClienteDto(repository.save(clienteEntity));
 	}
@@ -41,7 +44,12 @@ public class ClienteServiceImpl implements ClienteService{
 
 	@Override
 	public ClienteDto atualizarCliente(Long id, ClienteDto ClienteAtualizado) {
-		
+		Optional<ClienteEntity> clientePorId = repository.findById(id);
+		if(clientePorId.isPresent()) {
+			clientePorId.get().atualizaCliente(ClienteAtualizado);
+			var entidadePersistida = repository.save(clientePorId.get());
+			return new ClienteDto(entidadePersistida);
+		}
 		return null;
 	}
 	
@@ -51,5 +59,9 @@ public class ClienteServiceImpl implements ClienteService{
 		if(cliente.getDataNascimento().isAfter(idadeMinima) || cliente.getDataNascimento().isBefore(idadeMaxima)) {
 			throw new IllegalArgumentException("Os clientes não podem ter a mais de 100 anos e nem ter menos que 12 anos");
 		}
+	}
+	
+	public String limparCpf(String cpf) {
+		return cpf.replaceAll("[^\\d]", "");
 	}
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class MesaDto {
 	private Long id;
 	private int numero;
-	private int capacidadePessoas;
+	private int qntdPessoas;
 	
 	private Long idRestaurante;
 
@@ -19,7 +19,7 @@ public class MesaDto {
 	public MesaDto(MesaEntity mesaEntity) {
 		this.id = mesaEntity.getId();
 		this.numero = mesaEntity.getNumero();
-		this.capacidadePessoas = mesaEntity.getCapacidadePessoas();
+		this.qntdPessoas = mesaEntity.getQntdPessoas();
 		this.idRestaurante = mesaEntity.getRestaurante().getId();
 	}
 }

@@ -2,6 +2,7 @@ package jv.triersistemas.reserva_restaurante.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,6 +20,7 @@ import jakarta.persistence.ManyToOne;
 import jv.triersistemas.reserva_restaurante.dto.ClienteDto;
 import jv.triersistemas.reserva_restaurante.dto.FuncionarioDto;
 import jv.triersistemas.reserva_restaurante.enums.CargoEnum;
+import jv.triersistemas.reserva_restaurante.enums.SexoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,12 +55,26 @@ public class FuncionarioEntity extends PessoaBase {
 		this.id = dto.getId();
 		this.nome = dto.getNome();
 		this.sobrenome = dto.getSobrenome();
+		this.cpf = dto.getCpf();
 		this.dataNascimento = dto.getDataNascimento();
-		this.sexo = dto.getSexo();
+		this.sexo = Objects.requireNonNullElse(dto.getSexo(), SexoEnum.INDEFINIDO);
 		this.telefone = dto.getTelefone();
-		this.dataAdmissao = dto.getDataAdmissao();
+		this.dataAdmissao = Objects.requireNonNullElse(dto.getDataAdmissao(), LocalDate.now());
 		this.salario = dto.getSalario();
 		this.cargaHoraria = dto.getCargaHoraria();
 		this.cargo = dto.getCargo();
+	}
+	
+	public FuncionarioEntity atualizaFuncionario(FuncionarioDto dto) {
+		this.nome = dto.getNome();
+		this.sobrenome = dto.getSobrenome();
+		this.cpf = dto.getCpf();
+		this.dataNascimento = dto.getDataNascimento();
+		this.sexo = dto.getSexo();
+		this.telefone = dto.getTelefone();
+		this.salario = dto.getSalario();
+		this.cargaHoraria = dto.getCargaHoraria();
+		this.cargo = dto.getCargo();
+		return this;
 	}
 }

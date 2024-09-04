@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jv.triersistemas.reserva_restaurante.dto.ClienteDto;
 import jv.triersistemas.reserva_restaurante.dto.RestauranteDto;
+import jv.triersistemas.reserva_restaurante.enums.SexoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,7 +51,7 @@ public class ClienteEntity extends PessoaBase {
 		this.sobrenome = dto.getSobrenome();
 		this.cpf = dto.getCpf();
 		this.dataNascimento = dto.getDataNascimento();
-		this.sexo = dto.getSexo();
+		this.sexo = Objects.requireNonNullElse(dto.getSexo(), SexoEnum.INDEFINIDO);
 		this.telefone = dto.getTelefone();
 		this.dataCadastro = Objects.requireNonNullElse(dto.getDataCadastro(), LocalDate.now());
 		this.quantidadeReservas = Objects.requireNonNullElse(dto.getQuantidadeReservas(), 0);
@@ -62,7 +63,7 @@ public class ClienteEntity extends PessoaBase {
 		this.nome = dto.getNome();
 		this.sobrenome = dto.getSobrenome();
 		this.cpf = dto.getCpf();
-		this.dataCadastro = dto.getDataNascimento();
+		this.dataNascimento = dto.getDataNascimento();
 		this.sexo = dto.getSexo();
 		this.telefone = dto.getTelefone();
 		this.bloqueado = dto.isBloqueado();
