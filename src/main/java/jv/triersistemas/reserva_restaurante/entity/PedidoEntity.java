@@ -1,6 +1,7 @@
 package jv.triersistemas.reserva_restaurante.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jv.triersistemas.reserva_restaurante.dto.MesaDto;
 import jv.triersistemas.reserva_restaurante.dto.PedidoDto;
 import lombok.AllArgsConstructor;
@@ -36,7 +38,7 @@ public class PedidoEntity {
 	@JoinColumn(name = "reserva_id", nullable = false)
 	@JsonIgnore
 	private ReservaEntity reserva;
-	
+
 	public PedidoEntity(PedidoDto dto) {
 		this.id = dto.getId();
 		this.descricaoPedido = dto.getDescricaoPedido();

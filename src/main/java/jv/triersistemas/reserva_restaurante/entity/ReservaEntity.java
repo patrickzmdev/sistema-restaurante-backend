@@ -1,6 +1,7 @@
 package jv.triersistemas.reserva_restaurante.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jv.triersistemas.reserva_restaurante.dto.ReservaDto;
 import jv.triersistemas.reserva_restaurante.enums.StatusEnum;
 import lombok.AllArgsConstructor;
@@ -47,22 +49,26 @@ public class ReservaEntity {
 	@JoinColumn(name = "mesa_id", nullable = false)
 	@JsonIgnore
 	private MesaEntity mesa;
-	
+
+	@OneToMany(mappedBy = "reserva", cascade = CascadeType.DETACH)
+	private List<PedidoEntity> pedidos;
+
 	public ReservaEntity(ReservaDto dto) {
 		this.id = dto.getId();
 		this.dataReserva = dto.getDataReserva();
 		this.quantidadePessoas = dto.getQuantidadePessoas();
 		this.status = Objects.requireNonNullElse(dto.getStatus(), StatusEnum.AGENDADA);
 		this.observacao = dto.getObservacao();
+		this.pedidos = dto.getPedidos();
 	}
-	
+
 	public ReservaEntity atualizaMesa(ReservaDto dto) {
 		this.dataReserva = dto.getDataReserva();
 		this.quantidadePessoas = dto.getQuantidadePessoas();
 		this.observacao = dto.getObservacao();
 		return this;
 	}
-	
+
 	public ReservaEntity atualizarStatus(StatusEnum status) {
 		this.status = status;
 		return this;

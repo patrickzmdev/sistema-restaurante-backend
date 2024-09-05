@@ -3,12 +3,15 @@ package jv.triersistemas.reserva_restaurante.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jv.triersistemas.reserva_restaurante.dto.ClienteDto;
@@ -22,8 +25,10 @@ public class ClienteController {
 	private ClienteService clienteService;
 
 	@GetMapping
-	public List<ClienteDto> getTodasCategorias() {
-		return clienteService.getTodosClientes();
+	public Page<ClienteDto> listarClientes(@RequestParam(defaultValue = "0", required = false) Integer page,
+											@RequestParam(defaultValue = "10", required = false) Integer size,
+											@RequestParam(required = false) String searchTerm){
+		return clienteService.listarClientes(Pageable.ofSize(size).withPage(page), searchTerm);
 	}
 
 	@PostMapping

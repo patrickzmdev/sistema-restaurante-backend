@@ -5,6 +5,7 @@ import java.util.List;
 
 import jv.triersistemas.reserva_restaurante.entity.MesaEntity;
 
+
 public interface MesaRepositoryCustom {
-	List<MesaEntity> buscarMesasPorDataECapacidadePessoas(Long restauranteId, Integer capacidadePessoas, LocalDate data);
+	List<MesaEntity> buscarMesasPorDataECapacidadePessoas(Long restauranteId, LocalDate data, Integer capacidadePessoas);
 }

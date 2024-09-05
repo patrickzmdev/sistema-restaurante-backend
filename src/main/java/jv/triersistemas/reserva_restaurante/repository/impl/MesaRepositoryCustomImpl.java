@@ -3,6 +3,8 @@ package jv.triersistemas.reserva_restaurante.repository.impl;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.jpa.impl.JPAQuery;
 
 import jakarta.persistence.EntityManager;
@@ -14,6 +16,7 @@ import jv.triersistemas.reserva_restaurante.entity.QRestauranteEntity;
 import jv.triersistemas.reserva_restaurante.enums.StatusEnum;
 import jv.triersistemas.reserva_restaurante.repository.MesaRepositoryCustom;
 
+@Repository
 public class MesaRepositoryCustomImpl implements MesaRepositoryCustom {
 
 	@PersistenceContext
@@ -24,7 +27,7 @@ public class MesaRepositoryCustomImpl implements MesaRepositoryCustom {
 	final QMesaEntity mesa = QMesaEntity.mesaEntity;
 
 	@Override
-	public List<MesaEntity> buscarMesasPorDataECapacidadePessoas(Long restauranteId, Integer capacidadePessoas, LocalDate data) {
+	public List<MesaEntity> buscarMesasPorDataECapacidadePessoas(Long restauranteId, LocalDate data, Integer capacidadePessoas) {
 		var query = new JPAQuery<MesaEntity>(em);
 
 		query.select(mesa).distinct()
@@ -32,9 +35,9 @@ public class MesaRepositoryCustomImpl implements MesaRepositoryCustom {
 		.join(restaurante.mesas, mesa)
 		.leftJoin(mesa.reservas, reserva)
 		.where(restaurante.id.eq(restauranteId)
-				.and(mesa.qntdPessoas.eq(capacidadePessoas))
-				.and(reserva.dataReserva.eq(data))
-				.and(reserva.status.ne(StatusEnum.CANCELADA)));
+				.and(mesa.qntdPessoas.goe(capacidadePessoas))
+				.and(reserva.dataReserva.ne(data).or(reserva.dataReserva.isNull()))
+				.and(reserva.status.ne(StatusEnum.CANCELADA).or(reserva.status.isNull())));
 
 		return query.fetch();
 	}

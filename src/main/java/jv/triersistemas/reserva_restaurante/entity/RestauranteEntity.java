@@ -41,6 +41,9 @@ public class RestauranteEntity {
 	@OneToMany(mappedBy = "restaurante", cascade = CascadeType.DETACH)
 	private List<MesaEntity> mesas;
 	
+	@OneToMany(mappedBy = "restaurante", cascade = CascadeType.DETACH)
+	private List<ClienteEntity> clientes;
+	
 	public RestauranteEntity(RestauranteDto dto) {
 		this.id = dto.getId();
 		this.nome = dto.getNome();
@@ -48,7 +51,7 @@ public class RestauranteEntity {
 		this.estrelas = dto.getEstrelas();
 		this.tipoComida = dto.getTipoComida();
 		this.mesas = dto.getMesas();
-
+		this.clientes = dto.getClientes();
 	}
 	
     public RestauranteEntity atualizaRestaurante(RestauranteDto dto) {

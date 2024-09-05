@@ -1,5 +1,6 @@
 package jv.triersistemas.reserva_restaurante.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import jv.triersistemas.reserva_restaurante.dto.MesaDto;
 import jv.triersistemas.reserva_restaurante.entity.MesaEntity;
 import jv.triersistemas.reserva_restaurante.entity.RestauranteEntity;
 import jv.triersistemas.reserva_restaurante.repository.MesaRepository;
+import jv.triersistemas.reserva_restaurante.repository.MesaRepositoryCustom;
 import jv.triersistemas.reserva_restaurante.repository.RestauranteRepository;
 import jv.triersistemas.reserva_restaurante.service.MesaService;
 
@@ -18,6 +20,9 @@ public class MesaServiceImpl implements MesaService {
 
 	@Autowired
 	private MesaRepository repository;
+	
+	@Autowired
+	private MesaRepositoryCustom mesaRepositoryCustom;
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -47,6 +52,12 @@ public class MesaServiceImpl implements MesaService {
 			return new MesaDto(entidadePersistida);
 		}
 		return null;
+	}
+
+	@Override
+	public List<MesaDto> buscarMesaPorDataECapacidadePessoas(Long idRestaurante, LocalDate data,Integer capacidadePessoas) {
+		List<MesaEntity> mesas = mesaRepositoryCustom.buscarMesasPorDataECapacidadePessoas(idRestaurante, data, capacidadePessoas);
+		return mesas.stream().map(MesaDto::new).toList();
 	}
 
 }

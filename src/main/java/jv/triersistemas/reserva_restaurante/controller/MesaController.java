@@ -1,5 +1,6 @@
 package jv.triersistemas.reserva_restaurante.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jv.triersistemas.reserva_restaurante.dto.MesaDto;
@@ -29,6 +31,11 @@ public class MesaController {
 	@GetMapping
 	public List<MesaDto> getTodasMesas(){
 		return  mesaService.getTodasMesas();
+	}
+	
+	@GetMapping("/busca")
+	public List<MesaDto> buscarMesaPorDataECapacidadePessoas(@RequestParam Long idRestaurante, @RequestParam LocalDate data, @RequestParam Integer capacidadePessoas){
+		return mesaService.buscarMesaPorDataECapacidadePessoas(idRestaurante, data, capacidadePessoas);
 	}
 	
 	@PutMapping

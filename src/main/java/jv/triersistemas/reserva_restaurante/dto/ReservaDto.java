@@ -1,8 +1,10 @@
 package jv.triersistemas.reserva_restaurante.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jv.triersistemas.reserva_restaurante.entity.MesaEntity;
+import jv.triersistemas.reserva_restaurante.entity.PedidoEntity;
 import jv.triersistemas.reserva_restaurante.entity.ReservaEntity;
 import jv.triersistemas.reserva_restaurante.enums.StatusEnum;
 import lombok.AllArgsConstructor;
@@ -19,8 +21,11 @@ public class ReservaDto {
 	private StatusEnum status;
 	private String observacao;
 
+
 	private Long idCliente;
 	private Long idMesa;
+	private List<PedidoEntity> pedidos;
+
 	
 	public ReservaDto(ReservaEntity reservaEntity) {
 		this.id = reservaEntity.getId();
@@ -30,5 +35,6 @@ public class ReservaDto {
 		this.observacao = reservaEntity.getObservacao();
 		this.idCliente = reservaEntity.getCliente().getId();
 		this.idMesa = reservaEntity.getMesa().getId();
+		this.pedidos = reservaEntity.getPedidos();
 	}
 }

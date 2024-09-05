@@ -73,6 +73,24 @@ public class ReservaServiceImpl implements ReservaService {
 		return null;
 
 	}
+	
+	@Override
+	public void concluirReservaNaoFinalizada() {
+		List<ReservaEntity> listaReservas = repository.findByStatus(StatusEnum.AGENDADA);
+		for (ReservaEntity reserva : listaReservas) {
+			if(reserva.getDataReserva().isBefore(LocalDate.now())) {
+				if(reserva.getPedidos().isEmpty()) {
+					reserva.setStatus(StatusEnum.INADIPLENTE);
+					reserva.setObservacao("Reserva finalizada automaticamente pelo sistema");
+				}else {
+					reserva.setStatus(StatusEnum.CONCLUIDA);
+					reserva.setObservacao("Reserva finalizada automaticamente pelo sistema");
+				}
+				repository.save(reserva);
+			}
+		}
+		
+	}
 
 	public void validaDataReserva(ReservaDto reserva) {
 		if (reserva.getDataReserva().isBefore(LocalDate.now())) {
@@ -113,5 +131,6 @@ public class ReservaServiceImpl implements ReservaService {
         	throw new IllegalArgumentException("Este cliente está bloqueado pois possui 3 inadimplências, pagar taxa para desbloqueio");
         }
     }
+
 
 }

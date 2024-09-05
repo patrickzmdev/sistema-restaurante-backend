@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jv.triersistemas.reserva_restaurante.dto.ClienteDto;
@@ -13,6 +15,7 @@ import jv.triersistemas.reserva_restaurante.entity.ReservaEntity;
 import jv.triersistemas.reserva_restaurante.entity.RestauranteEntity;
 import jv.triersistemas.reserva_restaurante.enums.StatusEnum;
 import jv.triersistemas.reserva_restaurante.repository.ClienteRepository;
+import jv.triersistemas.reserva_restaurante.repository.ClienteRepositoryCustom;
 import jv.triersistemas.reserva_restaurante.repository.ReservaRepository;
 import jv.triersistemas.reserva_restaurante.repository.RestauranteRepository;
 import jv.triersistemas.reserva_restaurante.service.ClienteService;
@@ -22,6 +25,9 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Autowired
 	private ClienteRepository repository;
+	
+	@Autowired
+	private ClienteRepositoryCustom clienteRepositoryCustom;
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -84,6 +90,11 @@ public class ClienteServiceImpl implements ClienteService {
 		repository.save(cliente);
 
 		return new ClienteDto(cliente);
+	}
+	
+	@Override
+	public Page<ClienteDto> listarClientes(Pageable pageable, String searchTerm) {
+		return clienteRepositoryCustom.buscaPaginadaClientePorNome(pageable, searchTerm);
 	}
 
 	public void validarIdade(ClienteDto cliente) {

@@ -14,5 +14,7 @@ public interface ReservaService {
 //	String buscarSeTemReservaNaMesaPorData(LocalDate dataReserva, Integer numeroMesa);
 
 	ReservaDto atualizaReserva(Long id, StatusEnum status);
+	
+	void concluirReservaNaoFinalizada();
 
 }

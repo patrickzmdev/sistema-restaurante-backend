@@ -1,5 +1,7 @@
 package jv.triersistemas.reserva_restaurante.service;
 
-public interface PedidoService {
+import jv.triersistemas.reserva_restaurante.dto.PedidoDto;
 
+public interface PedidoService {
+	PedidoDto adicionarPedido(PedidoDto novoPedido);
 }

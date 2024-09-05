@@ -11,5 +11,7 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Long>{
     List<ReservaEntity> findByClienteId(Long clienteId);
     
     List<ReservaEntity> findByClienteIdAndStatus(Long clieteId, StatusEnum status);
+    
+    List<ReservaEntity> findByStatus(StatusEnum status);
 
 }
