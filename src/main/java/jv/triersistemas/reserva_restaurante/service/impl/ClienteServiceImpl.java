@@ -9,20 +9,25 @@ import org.springframework.stereotype.Service;
 
 import jv.triersistemas.reserva_restaurante.dto.ClienteDto;
 import jv.triersistemas.reserva_restaurante.entity.ClienteEntity;
+import jv.triersistemas.reserva_restaurante.entity.ReservaEntity;
 import jv.triersistemas.reserva_restaurante.entity.RestauranteEntity;
+import jv.triersistemas.reserva_restaurante.enums.StatusEnum;
 import jv.triersistemas.reserva_restaurante.repository.ClienteRepository;
+import jv.triersistemas.reserva_restaurante.repository.ReservaRepository;
 import jv.triersistemas.reserva_restaurante.repository.RestauranteRepository;
 import jv.triersistemas.reserva_restaurante.service.ClienteService;
-import jv.triersistemas.reserva_restaurante.service.RestauranteService;
 
 @Service
-public class ClienteServiceImpl implements ClienteService{
+public class ClienteServiceImpl implements ClienteService {
 
 	@Autowired
 	private ClienteRepository repository;
-	
+
 	@Autowired
-	RestauranteRepository restauranteRepository;
+	private RestauranteRepository restauranteRepository;
+
+	@Autowired
+	private ReservaRepository reservaRepository;
 
 	@Override
 	public ClienteDto adicionarCliente(ClienteDto novoCliente) {
@@ -45,23 +50,53 @@ public class ClienteServiceImpl implements ClienteService{
 	@Override
 	public ClienteDto atualizarCliente(Long id, ClienteDto ClienteAtualizado) {
 		Optional<ClienteEntity> clientePorId = repository.findById(id);
-		if(clientePorId.isPresent()) {
+		if (clientePorId.isPresent()) {
 			clientePorId.get().atualizaCliente(ClienteAtualizado);
 			var entidadePersistida = repository.save(clientePorId.get());
 			return new ClienteDto(entidadePersistida);
 		}
 		return null;
 	}
-	
+
+	@Override
+	public ClienteDto bloquearCliente(Long clienteId) {
+		ClienteEntity cliente = repository.findById(clienteId).orElseThrow();
+
+		List<ReservaEntity> reservasInadimplentes = reservaRepository.findByClienteIdAndStatus(clienteId,
+				StatusEnum.INADIPLENTE);
+
+		if (reservasInadimplentes.size() >= 3) {
+			cliente.setBloqueado(true);
+			repository.save(cliente);
+		} else {
+			throw new IllegalArgumentException("Esse cliente não tem 3 inadimplências ");
+		}
+		return new ClienteDto(cliente);
+	}
+
+	@Override
+	public ClienteDto desbloquearCliente(Long clienteId) {
+		ClienteEntity cliente = repository.findById(clienteId)
+				.orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+
+		cliente.setBloqueado(false);
+
+		repository.save(cliente);
+
+		return new ClienteDto(cliente);
+	}
+
 	public void validarIdade(ClienteDto cliente) {
 		LocalDate idadeMinima = LocalDate.now().minusYears(12);
 		LocalDate idadeMaxima = LocalDate.now().minusYears(100);
-		if(cliente.getDataNascimento().isAfter(idadeMinima) || cliente.getDataNascimento().isBefore(idadeMaxima)) {
-			throw new IllegalArgumentException("Os clientes não podem ter a mais de 100 anos e nem ter menos que 12 anos");
+		if (cliente.getDataNascimento().isAfter(idadeMinima) || cliente.getDataNascimento().isBefore(idadeMaxima)) {
+			throw new IllegalArgumentException(
+					"Os clientes não podem ter a mais de 100 anos e nem ter menos que 12 anos");
 		}
 	}
-	
+
 	public String limparCpf(String cpf) {
 		return cpf.replaceAll("[^\\d]", "");
 	}
+
 }

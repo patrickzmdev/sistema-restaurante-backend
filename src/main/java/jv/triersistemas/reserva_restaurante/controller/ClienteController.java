@@ -35,4 +35,14 @@ public class ClienteController {
 	public ClienteDto atualizarCliente(@PathVariable Long id, @RequestBody ClienteDto clienteAtualizado) {
 		return clienteService.atualizarCliente(id, clienteAtualizado);
 	}
+	
+    @PutMapping("/desbloquear/{id}")
+    public ClienteDto desbloquearCliente(@PathVariable Long id) {
+        return clienteService.desbloquearCliente(id);
+    }
+    
+    @PutMapping("/bloquear/{id}")
+    public ClienteDto bloquearCliente(@PathVariable Long id) {
+        return clienteService.bloquearCliente(id);
+    }
 }

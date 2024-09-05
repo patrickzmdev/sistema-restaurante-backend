@@ -1,5 +1,8 @@
 package jv.triersistemas.reserva_restaurante.dto;
 
+import java.util.List;
+
+import jv.triersistemas.reserva_restaurante.entity.MesaEntity;
 import jv.triersistemas.reserva_restaurante.entity.PedidoEntity;
 import jv.triersistemas.reserva_restaurante.entity.RestauranteEntity;
 import jv.triersistemas.reserva_restaurante.enums.TipoComidaEnum;
@@ -16,6 +19,8 @@ public class RestauranteDto {
 	private String cnpj;
 	private int estrelas;
 	private TipoComidaEnum tipoComida;
+	private List<MesaEntity> mesas;
+
 	
 	public RestauranteDto(RestauranteEntity restauranteEntity) {
 		this.id = restauranteEntity.getId();
@@ -23,5 +28,6 @@ public class RestauranteDto {
 		this.cnpj = restauranteEntity.getCnpj();
 		this.estrelas = restauranteEntity.getEstrelas();
 		this.tipoComida = restauranteEntity.getTipoComida();
+		this.mesas = restauranteEntity.getMesas();
 	}
 }

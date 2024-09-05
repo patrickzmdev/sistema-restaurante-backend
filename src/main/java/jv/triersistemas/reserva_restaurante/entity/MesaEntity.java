@@ -1,5 +1,7 @@
 package jv.triersistemas.reserva_restaurante.entity;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jv.triersistemas.reserva_restaurante.dto.MesaDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,10 +37,15 @@ public class MesaEntity {
 	@JsonIgnore
 	private RestauranteEntity restaurante;
 	
+	@OneToMany(mappedBy = "mesa", cascade = CascadeType.DETACH)
+	private List<ReservaEntity> reservas;
+	
 	public MesaEntity(MesaDto dto) {
 		this.id = dto.getId();
 		this.numero = dto.getNumero();
 		this.qntdPessoas = dto.getQntdPessoas();
+		this.reservas = dto.getReservas();
+
 	}
 	
 	public MesaEntity atualizaMesa(MesaDto dto) {
