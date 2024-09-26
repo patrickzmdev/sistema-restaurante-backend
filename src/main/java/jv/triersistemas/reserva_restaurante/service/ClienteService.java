@@ -20,4 +20,5 @@ public interface ClienteService {
 	
 	Page<ClienteDto> listarClientes(Pageable pageable, String searchTerm);
 
+	ClienteDto buscarClientePorId(Long id);
 }

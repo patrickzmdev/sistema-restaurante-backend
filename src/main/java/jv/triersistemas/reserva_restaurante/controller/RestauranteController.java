@@ -32,7 +32,7 @@ public class RestauranteController {
 	}
 	
 	@PutMapping("/{id}")
-	private RestauranteDto autalizarRestaurante(@PathVariable Long id, @RequestBody RestauranteDto restauranteAtualizado) {
+	private RestauranteDto atualizarRestaurante(@PathVariable Long id, @RequestBody RestauranteDto restauranteAtualizado) {
 		return restauranteService.atualizarRestaurante(id, restauranteAtualizado);
 	}
 }

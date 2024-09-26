@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -95,6 +96,12 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public Page<ClienteDto> listarClientes(Pageable pageable, String searchTerm) {
 		return clienteRepositoryCustom.buscaPaginadaClientePorNome(pageable, searchTerm);
+	}
+
+	@Override
+	public ClienteDto buscarClientePorId(Long id) {
+		ClienteEntity cliente = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
+		return new ClienteDto(cliente);
 	}
 
 	public void validarIdade(ClienteDto cliente) {
