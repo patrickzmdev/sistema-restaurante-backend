@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,12 @@ public class MesaServiceImpl implements MesaService {
 	public List<MesaDto> buscarMesaPorDataECapacidadePessoas(Long idRestaurante, LocalDate data,Integer capacidadePessoas) {
 		List<MesaEntity> mesas = mesaRepositoryCustom.buscarMesasPorDataECapacidadePessoas(idRestaurante, data, capacidadePessoas);
 		return mesas.stream().map(MesaDto::new).toList();
+	}
+
+	@Override
+	public MesaDto buscarMesaPorId(Long id) {
+		MesaEntity mesaEntity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
+		return new MesaDto(mesaEntity);
 	}
 
 }

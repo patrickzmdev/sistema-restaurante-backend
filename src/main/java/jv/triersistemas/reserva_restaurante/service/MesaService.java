@@ -8,11 +8,12 @@ import jv.triersistemas.reserva_restaurante.dto.MesaDto;
 public interface MesaService {
 	
 	MesaDto adicionarMesa(MesaDto novaMesa);
-	
+
 	List<MesaDto> getTodasMesas();
-	
+
 	MesaDto atualizarMesa(Long id, MesaDto mesaAtualizada);
 	
 	List<MesaDto> buscarMesaPorDataECapacidadePessoas(Long idRestaurante, LocalDate data, Integer capacidadePessoas);
-	
+
+    MesaDto buscarMesaPorId(Long id);
 }

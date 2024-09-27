@@ -35,7 +35,7 @@ public class MesaRepositoryCustomImpl implements MesaRepositoryCustom {
 		.join(restaurante.mesas, mesa)
 		.leftJoin(mesa.reservas, reserva)
 		.where(restaurante.id.eq(restauranteId)
-				.and(mesa.qntdPessoas.goe(capacidadePessoas))
+				.and(mesa.qntPessoas.goe(capacidadePessoas))
 				.and(reserva.dataReserva.ne(data).or(reserva.dataReserva.isNull()))
 				.and(reserva.status.ne(StatusEnum.CANCELADA).or(reserva.status.isNull())));
 

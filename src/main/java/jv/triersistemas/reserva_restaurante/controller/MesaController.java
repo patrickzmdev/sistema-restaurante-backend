@@ -3,6 +3,7 @@ package jv.triersistemas.reserva_restaurante.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import jv.triersistemas.reserva_restaurante.dto.ClienteDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,7 @@ public class MesaController {
 	public MesaDto adicionarMesa(@RequestBody MesaDto novaMesa) {
 		return mesaService.adicionarMesa(novaMesa);
 	}
-	
+
 	@GetMapping
 	public List<MesaDto> getTodasMesas(){
 		return  mesaService.getTodasMesas();
@@ -41,5 +42,10 @@ public class MesaController {
 	@PutMapping
 	public MesaDto atualizarMesa(@PathVariable Long id, @RequestBody MesaDto mesaAtualizada) {
 		return mesaService.atualizarMesa(id, mesaAtualizada);
+	}
+
+	@GetMapping("/{id}")
+	public MesaDto buscarMesaPorId(@PathVariable Long id) {
+		return mesaService.buscarMesaPorId(id);
 	}
 }
