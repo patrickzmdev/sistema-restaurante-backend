@@ -3,6 +3,7 @@ package jv.triersistemas.reserva_restaurante.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,19 @@ public class RestauranteServiceImpl implements RestauranteService {
 		}
 		return null;
 	}
+
+	@Override
+	public void removerRestaurante(Long id) {
+
+		Optional<RestauranteEntity> restaurantePorId = repository.findById(id);
+		if (restaurantePorId.isPresent()) {
+
+			repository.delete(restaurantePorId.get());
+		} else {
+			throw new EntityNotFoundException("Restaurante com ID " + id + " não encontrado.");
+		}
+	}
+
 
 	public String limparCnpj(String cnpj) {
 		return cnpj.replaceAll("[^\\d]", "");

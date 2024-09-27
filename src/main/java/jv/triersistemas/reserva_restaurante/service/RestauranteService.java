@@ -10,4 +10,6 @@ public interface RestauranteService {
 	List<RestauranteDto> getTodosRestaurantes();
 
 	RestauranteDto atualizarRestaurante(Long id, RestauranteDto restauranteAtualizado);
+
+	void removerRestaurante(Long id);
 }

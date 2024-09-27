@@ -2,14 +2,10 @@ package jv.triersistemas.reserva_restaurante.controller;
 
 import java.util.List;
 
+import jv.triersistemas.reserva_restaurante.entity.RestauranteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import jv.triersistemas.reserva_restaurante.dto.RestauranteDto;
 import jv.triersistemas.reserva_restaurante.service.RestauranteService;
@@ -35,4 +31,11 @@ public class RestauranteController {
 	private RestauranteDto atualizarRestaurante(@PathVariable Long id, @RequestBody RestauranteDto restauranteAtualizado) {
 		return restauranteService.atualizarRestaurante(id, restauranteAtualizado);
 	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> removerRestaurante(@PathVariable Long id) {
+		restauranteService.removerRestaurante(id);
+		return ResponseEntity.noContent().build();
+	}
+
 }
